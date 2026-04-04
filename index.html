@@ -1,1 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>إختبار تاريخ الأردن - الوحدة الرابعة - LMJO 09</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; text-align: center; padding: 20px; }
+        .quiz-container { background: white; max-width: 800px; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .question { margin-bottom: 20px; text-align: right; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .options { display: flex; flex-direction: column; align-items: flex-start; }
+        .option { margin: 5px 0; cursor: pointer; background: #e9ecef; padding: 10px; width: 100%; border-radius: 5px; text-align: right; }
+        .option:hover { background: #dee2e6; }
+        .correct { background: #d4edda !important; color: #155724; }
+        .wrong { background: #f8d7da !important; color: #721c24; }
+        #result { font-size: 24px; font-weight: bold; margin-top: 20px; color: #007bff; }
+        button { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 18px; }
+    </style>
+</head>
+<body>
 
+<div class="quiz-container">
+    <h1>إختبار تاريخ الأردن (جيل 2009)</h1>
+    <p>الوحدة الرابعة: الحياة السياسية</p>
+    <div id="quiz">
+        <!-- الأسئلة ستظهر هنا -->
+    </div>
+    <button onclick="calculateScore()">عرض النتيجة النهائية</button>
+    <div id="result"></div>
+    <p><a href="https://farmbot1238.github.io/amtehanat/">للمزيد من الامتحانات الرسمية اضغط هنا</a></p>
+</div>
+
+<script>
+    const quizData = [
+        { q: "من هو أول رئيس لأول حكومة في عهد الإمارة 1921؟", a: "رشيد طليع", options: ["رشيد طليع", "مظهر رسلان", "حسين الطراونة", "سمير الرفاعي"] },
+        { q: "في أي عام تم توقيع المعاهدة الأردنية البريطانية؟", a: "1928", options: ["1921", "1923", "1928", "1946"] },
+        { q: "ما هو نظام الحكم الذي نص عليه القانون الأساسي 1928؟", a: "أميري نيابي", options: ["ملكي وراثي", "جمهوري", "أميري نيابي", "عسكري"] },
+        { q: "من هو رئيس المؤتمر الوطني الأول عام 1928؟", a: "حسين الطراونة", options: ["توفيق أبو الهدى", "حسين الطراونة", "سعيد المفتي", "وصفي التل"] },
+        { q: "في أي عهد صدر دستور المملكة الحالي (المعمول به مع تعديلاته)؟", a: "الملك طلال", options: ["الملك عبد الله الأول", "الملك طلال", "الملك الحسين", "الملك عبد الله الثاني"] },
+        { q: "مبدأ 'الأمة مصدر السلطات' ورد لأول مرة في دستور عام:", a: "1952", options: ["1928", "1946", "1952", "2011"] },
+        { q: "ما هي الورقة النقاشية التي تناولت موضوع 'سيادة القانون'؟", a: "السادسة", options: ["الأولى", "الثالثة", "السادسة", "السابعة"] },
+        { q: "مجلس الأمة يتكون من مجلسين هما:", a: "الأعيان والنواب", options: ["الأعيان والوزراء", "الأعيان والنواب", "النواب والبلديات", "الوزراء والنواب"] },
+        { q: "الجهة المسؤولة عن تعيين أعضاء مجلس الأعيان هي:", a: "الملك", options: ["الشعب", "رئيس الوزراء", "الملك", "مجلس النواب"] },
+        { q: "أول جامعة أردنية تأسست عام 1962 هي:", a: "الجامعة الأردنية", options: ["جامعة اليرموك", "الجامعة الأردنية", "جامعة العلوم والتكنولوجيا", "جامعة مؤتة"] }
+    ];
+
+    const quizDiv = document.getElementById('quiz');
+    quizData.forEach((item, index) => {
+        let html = `<div class="question">
+            <p><strong>س${index+1}: ${item.q}</strong></p>
+            <div class="options">`;
+        item.options.forEach(opt => {
+            html += `<div class="option" onclick="checkAnswer(this, '${item.a}', ${index})">${opt}</div>`;
+        });
+        html += `</div></div>`;
+        quizDiv.innerHTML += html;
+    });
+
+    let score = 0;
+    let answered = new Set();
+
+    function checkAnswer(element, correct, index) {
+        if (answered.has(index)) return;
+        if (element.innerText === correct) {
+            element.classList.add('correct');
+            score++;
+        } else {
+            element.classList.add('wrong');
+        }
+        answered.add(index);
+    }
+
+    function calculateScore() {
+        document.getElementById('result').innerText = `نتيجتك هي: ${score} من ${quizData.length}`;
+    }
+</script>
+</body>
+</html>
