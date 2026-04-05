@@ -418,7 +418,8 @@
                 title: "🏠 الرئيسية",
                 type: "normal",
                 items: [
-                    { icon: "fas fa-home", text: "الصفحة الرئيسية", action: "home", url: "welcome" }
+                    { icon: "fas fa-home", text: "الصفحة الرئيسية", action: "home", url: "welcome" },
+                    { icon: "fas fa-download", text: "تثبيت التطبيق 📲", action: "install", url: "", id: "installAppBtn", hidden: true }
                 ]
             },
             {
@@ -650,8 +651,10 @@
                 
                 section.items.forEach(item => {
                     const newBadge = item.isNew ? '<span class="new-badge">جديد</span>' : '';
+                    const displayStyle = item.hidden ? 'style="display:none;"' : '';
+                    const idAttr = item.id ? `id="${item.id}"` : '';
                     itemsHtml += `
-                        <button class="menu-btn" onclick="handleAction('${item.action}', '${item.url}', this)">
+                        <button ${idAttr} class="menu-btn" ${displayStyle} onclick="handleAction('${item.action}', '${item.url}', this)">
                             <i class="${item.icon}"></i>
                             <span>${item.text}${newBadge}</span>
                         </button>
@@ -681,6 +684,7 @@
             else if (action === 'home') showWelcome();
             else if (action === 'subscribe') showSubscribeModal();
             else if (action === 'email') window.location.href = `mailto:${url}`;
+            else if (action === 'install') installPWA();
         }
 
         function loadIframe(url) {
@@ -713,6 +717,27 @@
             buildMenu();
             showWelcome();
         });
+
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('installAppBtn');
+            if (installBtn) installBtn.style.display = 'flex';
+        });
+
+        function installPWA() {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                }
+                deferredPrompt = null;
+                const installBtn = document.getElementById('installAppBtn');
+                if (installBtn) installBtn.style.display = 'none';
+            });
+        }
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js')
