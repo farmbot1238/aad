@@ -2,7 +2,7 @@
   "name": "متعاونين على التفوق | LMJO 09",
   "short_name": "LMJO 09",
   "description": "منصة تعليمية للنجاح والتفوق - متعاونين على التفوق",
-  "start_url": "./index.html",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#f0f4f8",
   "theme_color": "#1e3c5c",
